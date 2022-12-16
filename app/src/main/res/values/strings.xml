@@ -2,4 +2,9 @@
     <string name="app_name">Take Note</string>
     <string name="title">title</string>
     <string name="description">Description</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="enter_title">Enter Title</string>
+    <string name="enter_note">Enter Note</string>
+    <string name="add_new_note">Add New Note</string>
 </resources>
