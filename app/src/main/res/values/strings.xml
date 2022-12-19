@@ -7,4 +7,6 @@
     <string name="enter_title">Enter Title</string>
     <string name="enter_note">Enter Note</string>
     <string name="add_new_note">Add New Note</string>
+    <string name="nothing_show">Nothing Saved</string>
+    <string name="add_notes">Add Notes</string>
 </resources>
