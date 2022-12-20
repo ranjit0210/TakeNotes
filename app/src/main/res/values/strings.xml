@@ -10,4 +10,7 @@
     <string name="nothing_show">Nothing Saved</string>
     <string name="add_notes">Add Notes</string>
     <string name="note_delete">Note deleted</string>
+    <string name="update">Update</string>
+    <string name="nothing_update">Nothing Update</string>
+    <string name="title_error">Please enter title for this note</string>
 </resources>
