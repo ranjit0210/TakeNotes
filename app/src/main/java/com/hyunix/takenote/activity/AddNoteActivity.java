@@ -24,12 +24,23 @@ public class AddNoteActivity extends AppCompatActivity
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         setContentView(R.layout.activity_add_note);
 
+        init();
+
+        clickEvent();
+
+    }
+
+    private void init()
+    {
         buttonCancel = findViewById(R.id.btnCancel);
         buttonSave = findViewById(R.id.btnSave);
 
         editTextTitle = findViewById(R.id.editTextViewTitle);
         editTextDescription = findViewById(R.id.editTextViewDescription);
+    }
 
+    private void clickEvent()
+    {
         buttonCancel.setOnClickListener(v -> {
 
             Toast.makeText(this, R.string.nothing_show, Toast.LENGTH_SHORT).show();
@@ -39,7 +50,6 @@ public class AddNoteActivity extends AppCompatActivity
         buttonSave.setOnClickListener(v -> {
             saveNote();
         });
-
     }
 
     public void saveNote()
@@ -49,10 +59,17 @@ public class AddNoteActivity extends AppCompatActivity
         title = editTextTitle.getText().toString();
         description = editTextDescription.getText().toString();
 
-        Intent intent = new Intent();
-        intent.putExtra("noteTitle", title);
-        intent.putExtra("noteDescription", description);
-        setResult(RESULT_OK, intent);
-        finish();
+        if (!title.isEmpty())
+        {
+            Intent intent = new Intent();
+            intent.putExtra("noteTitle", title);
+            intent.putExtra("noteDescription", description);
+            setResult(RESULT_OK, intent);
+            finish();
+        }
+        else
+        {
+            Toast.makeText(this, R.string.title_error, Toast.LENGTH_SHORT).show();
+        }
     }
 }

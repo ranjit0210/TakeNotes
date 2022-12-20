@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hyunix.takenote.activity.AddNoteActivity;
+import com.hyunix.takenote.activity.UpdateActivity;
 import com.hyunix.takenote.adapter.NoteAdapter;
 import com.hyunix.takenote.entity.Note;
 import com.hyunix.takenote.viewmodel.NoteViewModel;
@@ -26,7 +27,8 @@ public class MainActivity extends AppCompatActivity
     private NoteViewModel noteViewModel;
     private NoteAdapter adapter = new NoteAdapter();
 
-    ActivityResultLauncher<Intent> activityResultLauncher;
+    ActivityResultLauncher<Intent> activityResultLauncherForAddNote;
+    ActivityResultLauncher<Intent> activityResultLauncherForUpdateNote;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -35,7 +37,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         // to register activity
-        setActivityResultLauncher();
+        setActivityResultLauncherAddNote();
+        setActivityResultLauncherForUpdateNote();
 
         RecyclerView recyclerView = findViewById(R.id.recyclerList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -61,6 +64,14 @@ public class MainActivity extends AppCompatActivity
                 Toast.makeText(MainActivity.this, R.string.note_delete, Toast.LENGTH_SHORT).show();
             }
         }).attachToRecyclerView(recyclerView);
+
+        adapter.setOnClickListener(note -> {
+            Intent intent = new Intent(MainActivity.this, UpdateActivity.class);
+            intent.putExtra("id", note.getId());
+            intent.putExtra("title", note.getTitle());
+            intent.putExtra("description", note.getDescription());
+            activityResultLauncherForUpdateNote.launch(intent);
+        });
     }
 
     @Override
@@ -83,7 +94,7 @@ public class MainActivity extends AppCompatActivity
                 // startActivityForResult(i, 1); // deprecated function logic
 
                 // ActivityResultLauncher current work on it
-                activityResultLauncher.launch(i);
+                activityResultLauncherForAddNote.launch(i);
 
                 //activityResultLauncher
                 return true;
@@ -93,9 +104,30 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public void setActivityResultLauncher()
+    public void setActivityResultLauncherForUpdateNote()
     {
-        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        activityResultLauncherForUpdateNote = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+
+            int resultCode = result.getResultCode();
+            Intent data = result.getData();
+
+            if (resultCode == RESULT_OK && data != null)
+            {
+                int id = data.getIntExtra("id", -1);
+                String title = data.getStringExtra("lastTitle");
+                String description = data.getStringExtra("lastDescription");
+
+                Note note = new Note(title, description);
+                note.setId(id);
+                noteViewModel.update(note);
+            }
+
+        });
+    }
+
+    public void setActivityResultLauncherAddNote()
+    {
+        activityResultLauncherForAddNote = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
 
             int resultCode = result.getResultCode();
 
